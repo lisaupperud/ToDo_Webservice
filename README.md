@@ -19,8 +19,8 @@ Users can create, update, retrieve, and delete tasks via standard HTTP methods.
 
 - Add new tasks
 - Edit existing tasks
-- Delete tasks
-- Retrieve all tasks or a single task
+- Delete all or single tasks
+- Retrieve all or a single task
 - Input validation for task data
 
 ## Technologies
@@ -29,6 +29,7 @@ Users can create, update, retrieve, and delete tasks via standard HTTP methods.
 - Spring Boot
 - Gradle
 - MongoDB
+- Spring Web
 - Spring Data MongoDB
 - Spring Validation
 
