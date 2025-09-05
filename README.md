@@ -17,10 +17,11 @@ Users can create, update, retrieve, and delete tasks via standard HTTP methods.
 
 ## Features
 
+- Retrieve all or a single task
 - Add new tasks
 - Edit existing tasks
 - Delete all or single tasks
-- Retrieve all or a single task
+- Sort and filter tasks
 - Input validation for task data
 
 ## Technologies
