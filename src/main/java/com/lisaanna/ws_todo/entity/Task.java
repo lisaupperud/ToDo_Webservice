@@ -1,28 +1,20 @@
 package com.lisaanna.ws_todo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import org.springframework.data.mongodb.core.mapping.*;
 import java.util.List;
 
 @Document(collection = "task")
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
-
-    @Field("Name")
-    @NotBlank
+    @Field("name")
     private String name;
-
-    @Field("Description")
+    @Field("description")
     private String description;
-
-    @Field("Is completed")
-    @NotNull
-    private Boolean completed = false;
-
-    @Field("Tags")
+    @Field("is completed")
+    private Boolean completed;
+    @Field("tags")
     private List<String> tags;
 
     public Task() {}
