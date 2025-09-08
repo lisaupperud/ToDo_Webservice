@@ -56,7 +56,15 @@ public class TaskService {
     }
 
     // delete
-    public void delete(Task task) {
-        taskRepository.delete(task);
+    public void delete(String id) {
+
+        Task taskToDelete = taskRepository.findById(id).orElse(null);
+
+        if (taskToDelete != null) {
+            taskRepository.delete(taskToDelete);
+        } else {
+            throw new NullPointerException();
+        }
+
     }
 }
