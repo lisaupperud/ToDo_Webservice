@@ -1,40 +1,29 @@
 package com.lisaanna.ws_todo.service;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.util.List;
 
 public class TaskDTO {
 
-    @Id
-    private String id;
-
     @NotBlank
+    @Size(min = 1, max = 50)
     private String name;
 
+    @Size(min = 1, max = 500)
     private String description;
 
     @NotNull
-    private Boolean completed = false;
+    private boolean completed;
 
     private List<String> tags;
 
     public TaskDTO() {}
 
-    public TaskDTO(String id, String name, String description, Boolean completed, List<String> tags) {
-        this.id = id;
+    public TaskDTO(String name, String description, boolean completed, List<String> tags) {
         this.name = name;
         this.description = description;
         this.completed = completed;
         this.tags = tags;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -53,11 +42,11 @@ public class TaskDTO {
         this.description = description;
     }
 
-    public Boolean getCompleted() {
+    public boolean getCompleted() {
         return completed;
     }
 
-    public void setCompleted(Boolean completed) {
+    public void setCompleted(boolean completed) {
         this.completed = completed;
     }
 

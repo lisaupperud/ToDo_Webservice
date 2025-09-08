@@ -1,23 +1,51 @@
 package com.lisaanna.ws_todo.controller;
 
-import com.lisaanna.ws_todo.entity.Task;
-import com.lisaanna.ws_todo.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lisaanna.ws_todo.service.TaskDTO;
+import com.lisaanna.ws_todo.service.TaskService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/tasks")
 public class TaskController {
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskService taskService;
 
-    // get all: suggestion "/"?
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
     @GetMapping("/")
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    public ResponseEntity<List<TaskDTO>> findNotCompleted() {
+        List<TaskDTO> uncompletedTasks = taskService.findNotCompleted();
+        if (uncompletedTasks.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(uncompletedTasks);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<TaskDTO>> findAll() {
+        List<TaskDTO> tasks = taskService.findAllTasks();
+        if (tasks.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(tasks);
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<TaskDTO> findTaskByName(@PathVariable String name) {
+        Optional<TaskDTO> foundTask = taskService.findTaskByName(name);
+
+        if (foundTask.isPresent()) {
+            TaskDTO taskDTO = foundTask.get();
+            return ResponseEntity.ok().body(taskDTO);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     // get filtered
@@ -25,8 +53,15 @@ public class TaskController {
 
     // create new
     @PostMapping("/new")
-    public Task save(@RequestBody Task task) {
-        return taskRepository.save(task);
+    public ResponseEntity<TaskDTO> save(@RequestBody TaskDTO taskDTO) {
+
+        if (taskDTO == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        TaskDTO newTask = taskService.saveNewTask(taskDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
     }
 
     // update
