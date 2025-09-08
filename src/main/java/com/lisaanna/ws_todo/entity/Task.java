@@ -6,8 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-//@Document
+@Document(collection = "task")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
