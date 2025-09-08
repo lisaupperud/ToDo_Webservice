@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "task")
@@ -11,7 +12,9 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
+    @NotBlank
     private String title;
+    @NotBlank
     private String description;
 
     public Task() {}
