@@ -1,42 +1,54 @@
 package com.lisaanna.ws_todo.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import org.springframework.data.mongodb.core.mapping.*;
+import java.util.List;
 
 @Document(collection = "task")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
+
+    @Field("Name")
     @NotBlank
-    private String title;
-    @NotBlank
+    private String name;
+
+    @Field("Description")
     private String description;
+
+    @Field("Is completed")
+    @NotNull
+    private Boolean completed = false;
+
+    @Field("Tags")
+    private List<String> tags;
 
     public Task() {}
 
-    public Task(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
-
-    public void setId(String id) {
+    public Task(String id, String name, String description, Boolean completed, List<String> tags) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+        this.completed = completed;
+        this.tags = tags;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -45,5 +57,21 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }
