@@ -13,13 +13,13 @@ public class Task {
     @Field("description")
     private String description;
     @Field("is completed")
-    private Boolean completed;
+    private boolean completed;
     @Field("tags")
     private List<String> tags;
 
     public Task() {}
 
-    public Task(String id, String name, String description, Boolean completed, List<String> tags) {
+    public Task(String id, String name, String description, boolean completed, List<String> tags) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -51,11 +51,11 @@ public class Task {
         this.description = description;
     }
 
-    public Boolean getCompleted() {
+    public boolean getCompleted() {
         return completed;
     }
 
-    public void setCompleted(Boolean completed) {
+    public void setCompleted(boolean completed) {
         this.completed = completed;
     }
 

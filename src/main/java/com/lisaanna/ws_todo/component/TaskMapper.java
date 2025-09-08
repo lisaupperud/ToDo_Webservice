@@ -9,18 +9,18 @@ public class TaskMapper {
 
     public Task mapToTask(TaskDTO taskDTO) {
         Task task = new Task();
-        task.setId(taskDTO.getId());
         task.setName(taskDTO.getName());
         task.setDescription(taskDTO.getDescription());
+        task.setCompleted(taskDTO.getCompleted());
         task.setTags(taskDTO.getTags());
         return task;
     }
 
     public TaskDTO mapToTaskDTO(Task task) {
         TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setId(task.getId());
         taskDTO.setName(task.getName());
         taskDTO.setDescription(task.getDescription());
+        taskDTO.setCompleted(task.getCompleted());
         taskDTO.setTags(task.getTags());
         return taskDTO;
     }

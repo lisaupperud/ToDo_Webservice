@@ -1,12 +1,15 @@
 package com.lisaanna.ws_todo.service;
 
+import com.lisaanna.ws_todo.component.TaskMapper;
 import com.lisaanna.ws_todo.entity.Task;
 import com.lisaanna.ws_todo.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -14,35 +17,47 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    // get - all
-    public List<Task> findAll() {
-        return taskRepository.findAll();
-    }
+    private final TaskMapper taskMapper;
 
-    // get - single
-    public Optional<Task> findTaskById(String id) {
-        return taskRepository.findById(id);
+    public TaskService(TaskRepository taskRepository, TaskMapper taskMapper) {
+        this.taskRepository = taskRepository;
+        this.taskMapper = taskMapper;
     }
 
     // get - auto filtered
-    public List<Task> findNotCompleted() {
-        List<Task> notCompleted = taskRepository.findAll();
+    public List<TaskDTO> findNotCompleted() {
+        List<Task> notCompleted = new ArrayList<>();
 
-        for (Task task : notCompleted) {
-            if (task.getCompleted() == false) {
+        for (Task task : taskRepository.findAll()) {
+            if (!task.getCompleted()) {
                 notCompleted.add(task);
             }
         }
 
-        return notCompleted;
+        return notCompleted.stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
     }
 
-    // get - filtered by input
+    // get - all
+    public List<TaskDTO> findAllTasks() {
+        List<Task> tasks = taskRepository.findAll();
+        return tasks.stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
+    }
 
+    // get - single
+    public Optional<TaskDTO> findTaskByName(String name) {
+        Optional<Task> foundTask = taskRepository.findByName(name);
+        return foundTask.map(taskMapper::mapToTaskDTO);
+    }
+
+
+    // get - filtered by input
+    // TODO: Use queries in repo for specified filters
 
     // post
-    public Task save(Task task) {
-        return taskRepository.save(task);
+    public TaskDTO saveNewTask(TaskDTO taskDTO) {
+        Task task = taskMapper.mapToTask(taskDTO);
+        taskRepository.save(task);
+        return taskDTO;
     }
 
     // put
