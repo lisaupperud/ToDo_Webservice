@@ -2,7 +2,8 @@ package com.lisaanna.ws_todo.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-@RestController //suggestion: "/tasks/"?
+@RestController
+@RequestMapping("/v1/tasks/")
 public class TaskController {
 
     // get all: suggestion "/"?
