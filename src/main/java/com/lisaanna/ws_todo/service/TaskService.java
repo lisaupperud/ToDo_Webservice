@@ -26,15 +26,8 @@ public class TaskService {
 
     // get - auto filtered
     public List<TaskDTO> findNotCompleted() {
-        List<Task> notCompleted = new ArrayList<>();
 
-        for (Task task : taskRepository.findAll()) {
-            if (!task.getCompleted()) {
-                notCompleted.add(task);
-            }
-        }
-
-        return notCompleted.stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
+        return taskRepository.findByNotCompleted().stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
     }
 
     // get - all
