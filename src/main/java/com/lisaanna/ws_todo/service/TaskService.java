@@ -6,7 +6,6 @@ import com.lisaanna.ws_todo.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,7 +25,6 @@ public class TaskService {
 
     // get - auto filtered
     public List<TaskDTO> findNotCompleted() {
-
         return taskRepository.findByNotCompleted().stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
     }
 
@@ -42,9 +40,10 @@ public class TaskService {
         return foundTask.map(taskMapper::mapToTaskDTO);
     }
 
-
-    // get - filtered by input
-    // TODO: Use queries in repo for specified filters
+    // get - by tags
+    public List<TaskDTO> findTaskByTag(String tag) {
+        return taskRepository.findByTags(tag).stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
+    }
 
     // post
     public TaskDTO saveNewTask(TaskDTO taskDTO) {
