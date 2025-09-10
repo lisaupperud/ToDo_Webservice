@@ -11,6 +11,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -103,6 +105,18 @@ public class TaskService {
     // Move document from task to trashcan
     public boolean moveToTrash(String id) {
         return moveDocument(taskCollection, trashCollection, id);
+    }
+
+    // Move all completed tasks to trashcan
+    public boolean moveAllCompletedToTrash() {
+        List<Task> completedTasks = taskRepository.findByCompleted();
+        if (!completedTasks.isEmpty()) {
+            for (Task completedTask : completedTasks) {
+                moveDocument(taskCollection, trashCollection, completedTask.getId());
+            }
+            return true;
+        }
+        return false;
     }
 
     // Move document from trashcan to task

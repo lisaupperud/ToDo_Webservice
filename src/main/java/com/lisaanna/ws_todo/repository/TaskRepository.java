@@ -14,6 +14,9 @@ public interface TaskRepository extends MongoRepository<Task, String> {
     @Query("{'completed': false}")
     List<Task> findByNotCompleted();
 
+    @Query("{'completed': true}")
+    List<Task> findByCompleted();
+
     @Query("{'tags': ?0}")
     List<Task> findByTags(String tags);
 

@@ -106,6 +106,15 @@ public class TaskController {
         }
     }
 
+    @PutMapping("/trash/completed")
+    public ResponseEntity<String> moveCompletedTasksToTrash() {
+        boolean success = taskService.moveAllCompletedToTrash();
+        if (!success) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("All completed tasks moved to trash");
+    }
+
     // restore task from trashcan
     @PutMapping("/restore/{id}")
     public ResponseEntity<TaskDTO> restoreTaskFromTrash(@PathVariable String id) {
