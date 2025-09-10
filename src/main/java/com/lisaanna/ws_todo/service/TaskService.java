@@ -30,8 +30,7 @@ public class TaskService {
 
     // get - all
     public List<TaskDTO> findAllTasks() {
-        List<Task> tasks = taskRepository.findAll();
-        return tasks.stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
+        return taskRepository.findAll().stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
     }
 
     // get - single

@@ -6,6 +6,9 @@ import com.lisaanna.ws_todo.repository.DeletedTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class DeletedTaskService {
 
@@ -20,8 +23,14 @@ public class DeletedTaskService {
     }
 
     // GET - all
+    public List<DeletedTaskDTO> findAllDeletedTasks(){
+        return deletedTaskRepository.findAll().stream().map(deletedTaskMapper::mapToDeletedTaskDTO).collect(Collectors.toList());
+    }
 
     // GET - filtered
+    public List<DeletedTaskDTO> findDeletedTaskByTag(String tag){
+        return deletedTaskRepository.findByTags(tag).stream().map(deletedTaskMapper::mapToDeletedTaskDTO).collect(Collectors.toList());
+    }
 
     // DELETE - by id
     public void deleteTaskFromTrash(String id) {
@@ -37,4 +46,7 @@ public class DeletedTaskService {
     }
 
     // DELETE - all
+    public void deleteAllTasks() {
+        deletedTaskRepository.deleteAll();
+    }
 }

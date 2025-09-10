@@ -16,7 +16,7 @@ public class DeletedTaskMapper {
         return deletedTask;
     }
 
-    public DeletedTaskDTO mapToTaskDTO(DeletedTask deletedTask) {
+    public DeletedTaskDTO mapToDeletedTaskDTO(DeletedTask deletedTask) {
         DeletedTaskDTO deletedTaskDTO = new DeletedTaskDTO();
         deletedTaskDTO.setName(deletedTask.getName());
         deletedTaskDTO.setDescription(deletedTask.getDescription());
