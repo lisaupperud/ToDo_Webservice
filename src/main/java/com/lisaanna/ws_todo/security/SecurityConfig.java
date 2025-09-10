@@ -13,7 +13,7 @@ public class SecurityConfig {
     @Bean
     public RateLimiter rateLimiter() {
         RateLimiterConfig config = RateLimiterConfig.custom()
-                .limitForPeriod(10) // Max requests per interval
+                .limitForPeriod(2) // Max requests per interval
                 .limitRefreshPeriod(Duration.ofMinutes(1)) // Interval duration
                 .timeoutDuration(Duration.ofSeconds(1)) // Timeout for acquiring permits
                 .build();
