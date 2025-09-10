@@ -33,20 +33,24 @@ public class DeletedTaskService {
     }
 
     // DELETE - by id
-    public void deleteTaskFromTrash(String id) {
-
+    public boolean deleteTaskFromTrash(String id) {
         DeletedTask taskToDelete = deletedTaskRepository.findById(id).orElse(null);
 
         if (taskToDelete != null) {
             deletedTaskRepository.delete(taskToDelete);
+            return true;
         } else {
-            throw new NullPointerException();
+            return false;
         }
-
     }
 
     // DELETE - all
-    public void deleteAllTasks() {
-        deletedTaskRepository.deleteAll();
+    public boolean deleteAllTasks() {
+        if (deletedTaskRepository.findAll().isEmpty()) {
+            return false;
+        } else {
+            deletedTaskRepository.deleteAll();
+            return true;
+        }
     }
 }

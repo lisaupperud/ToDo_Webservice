@@ -7,6 +7,7 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,15 @@ public class TaskService {
         return taskRepository.findAll().stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
     }
 
-    // get - single
+    // get - single by name
     public Optional<TaskDTO> findTaskByName(String name) {
         Optional<Task> foundTask = taskRepository.findByName(name);
+        return foundTask.map(taskMapper::mapToTaskDTO);
+    }
+
+    // get - single by id
+    public Optional<TaskDTO> findTaskById(String id) {
+        Optional<Task> foundTask = taskRepository.findById(id);
         return foundTask.map(taskMapper::mapToTaskDTO);
     }
 
@@ -93,25 +100,6 @@ public class TaskService {
         return taskMapper.mapToTaskDTO(updatedTask);
     }
 
-    /*
-    // put
-    public Task update(String id, TaskDTO task) {
-
-        Task updatedTask = taskRepository.findById(id).orElse(null);
-
-        if (updatedTask != null) {
-            updatedTask.setName(task.getName());
-            updatedTask.setDescription(task.getDescription());
-            updatedTask.setCompleted(task.getCompleted());
-            updatedTask.setTags(task.getTags());
-        } else {
-            throw new NullPointerException();
-        }
-
-        return taskRepository.save(updatedTask);
-    }
-    */
-
     // Move document from task to trashcan
     public boolean moveToTrash(String id) {
         return moveDocument(taskCollection, trashCollection, id);
@@ -125,11 +113,17 @@ public class TaskService {
     private boolean moveDocument(MongoCollection<Document> from,
                                  MongoCollection<Document> to,
                                  String id) {
-        Bson filter = Filters.eq("_id", id);
+        Bson filter;
+        try {
+            filter = Filters.eq("_id", new ObjectId(id));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid ObjectId format: " + id);
+            return false;
+        }
 
         Document doc = from.find(filter).first();
         if (doc == null) {
-            System.out.println("Document not found.");
+            System.out.println("Document not found in source collection.");
             return false;
         }
 
