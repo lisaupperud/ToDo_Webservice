@@ -72,6 +72,27 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
     }
 
+    // update individual fields of choice
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable String id, @RequestBody TaskDTO taskDTO) {
+        if (taskDTO == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        TaskDTO updatedTaskDTO = taskService.updateTask(id, taskDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedTaskDTO);
+    }
+
+    @PatchMapping("/complete/{id}")
+    public ResponseEntity<TaskDTO> completeTask(@PathVariable String id) {
+        if (id == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        TaskDTO updatedTaskDTO = taskService.completeTask(id);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedTaskDTO);
+    }
+
     // update
     //@PutMapping
 

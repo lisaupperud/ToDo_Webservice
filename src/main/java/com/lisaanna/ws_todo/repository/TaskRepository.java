@@ -17,4 +17,5 @@ public interface TaskRepository extends MongoRepository<Task, String> {
     @Query("{'tags': ?0}")
     List<Task> findByTags(String tags);
 
+    String id(String id);
 }
