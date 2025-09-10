@@ -1,6 +1,5 @@
 package com.lisaanna.ws_todo.service;
 
-import com.lisaanna.ws_todo.entity.DeletedTask;
 import com.lisaanna.ws_todo.entity.Task;
 import com.lisaanna.ws_todo.repository.DeletedTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;

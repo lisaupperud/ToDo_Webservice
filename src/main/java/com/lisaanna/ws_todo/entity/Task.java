@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.*;
 import java.util.List;
 
 @Document(collection = "task")
-public class DeletedTask {
+public class Task {
     @Id
     private String id;
     @Field("name")
