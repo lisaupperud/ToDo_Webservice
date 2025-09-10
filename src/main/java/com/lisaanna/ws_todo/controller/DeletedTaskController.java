@@ -4,6 +4,7 @@ import com.lisaanna.ws_todo.service.DeletedTaskDTO;
 import com.lisaanna.ws_todo.service.DeletedTaskService;
 import com.lisaanna.ws_todo.service.TaskDTO;
 import com.lisaanna.ws_todo.service.TaskService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class DeletedTaskController {
 
     // GET - all
     @GetMapping("/")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<List<DeletedTaskDTO>> getAllTrash() {
         List<DeletedTaskDTO> deletedTaskDTOList = deletedTaskService.findAllDeletedTasks();
         if (deletedTaskDTOList.isEmpty()) {
@@ -40,6 +42,7 @@ public class DeletedTaskController {
 
     // GET - filtered by tags
     @GetMapping("/tag/{tags}")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<List<DeletedTaskDTO>> findByTags(@PathVariable String tags) {
         List<DeletedTaskDTO> deletedTaskByTags = deletedTaskService.findDeletedTaskByTag(tags);
         if (deletedTaskByTags.isEmpty()) {
@@ -50,6 +53,7 @@ public class DeletedTaskController {
 
     // DELETE - by id
     @DeleteMapping("/delete/{id}")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<DeletedTaskDTO> deleteSingleTask(@PathVariable String id) {
         if (deletedTaskService.deleteTaskFromTrash(id)) {
             return ResponseEntity.noContent().build();
@@ -60,6 +64,7 @@ public class DeletedTaskController {
 
     // DELETE - all
     @DeleteMapping("/delete/all")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<DeletedTaskDTO> deleteAllTasks() {
         if (deletedTaskService.deleteAllTasks()) {
             return ResponseEntity.noContent().build();

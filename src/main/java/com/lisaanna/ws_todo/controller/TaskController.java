@@ -2,6 +2,7 @@ package com.lisaanna.ws_todo.controller;
 
 import com.lisaanna.ws_todo.service.TaskDTO;
 import com.lisaanna.ws_todo.service.TaskService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class TaskController {
     }
 
     @GetMapping("/")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<List<TaskDTO>> findNotCompleted() {
         List<TaskDTO> uncompletedTasks = taskService.findNotCompleted();
         if (uncompletedTasks.isEmpty()) {
@@ -29,6 +31,7 @@ public class TaskController {
     }
 
     @GetMapping("/all")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<List<TaskDTO>> findAll() {
         List<TaskDTO> tasks = taskService.findAllTasks();
         if (tasks.isEmpty()) {
@@ -38,6 +41,7 @@ public class TaskController {
     }
 
     @GetMapping("/{name}")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<TaskDTO> findTaskByName(@PathVariable String name) {
         Optional<TaskDTO> foundTask = taskService.findTaskByName(name);
 
@@ -49,6 +53,7 @@ public class TaskController {
     }
 
     @GetMapping("/tag/{tags}")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<List<TaskDTO>> findByTags(@PathVariable String tags) {
         List<TaskDTO> taskByTags = taskService.findTaskByTag(tags);
 
@@ -61,6 +66,7 @@ public class TaskController {
 
     // create new
     @PostMapping("/new")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<TaskDTO> save(@RequestBody TaskDTO taskDTO) {
 
         if (taskDTO == null) {
@@ -74,6 +80,7 @@ public class TaskController {
 
     // update individual fields of choice
     @PatchMapping("/update/{id}")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<TaskDTO> updateTask(@PathVariable String id, @RequestBody TaskDTO taskDTO) {
         if (taskDTO == null) {
             return ResponseEntity.badRequest().build();
@@ -85,6 +92,7 @@ public class TaskController {
 
     // update 'complete' field to true
     @PatchMapping("/complete/{id}")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<TaskDTO> completeTask(@PathVariable String id) {
         if (id == null) {
             return ResponseEntity.badRequest().build();
@@ -96,6 +104,7 @@ public class TaskController {
 
     // move task to trashcan
     @PutMapping("/trash/{id}")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<String> moveTaskToTrash(@PathVariable String id) {
         boolean success = taskService.moveToTrash(id);
 
@@ -107,6 +116,7 @@ public class TaskController {
     }
 
     @PutMapping("/trash/completed")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<String> moveCompletedTasksToTrash() {
         boolean success = taskService.moveAllCompletedToTrash();
         if (!success) {
@@ -117,6 +127,7 @@ public class TaskController {
 
     // restore task from trashcan
     @PutMapping("/restore/{id}")
+    @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<TaskDTO> restoreTaskFromTrash(@PathVariable String id) {
         boolean success = taskService.restoreFromTrash(id);
         if (!success) {
