@@ -83,6 +83,7 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedTaskDTO);
     }
 
+    // update 'complete' field to true
     @PatchMapping("/complete/{id}")
     public ResponseEntity<TaskDTO> completeTask(@PathVariable String id) {
         if (id == null) {
@@ -93,13 +94,39 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedTaskDTO);
     }
 
-    // update
-    //@PutMapping
+    // move task to trashcan
+    @PutMapping("/trash/{id}")
+    public ResponseEntity<String> moveTaskToTrash(@PathVariable String id) {
+        boolean success = taskService.moveToTrash(id);
 
-    //delete specific
-    //@DeleteMapping
+        if (success) {
+            return ResponseEntity.ok("Task moved to trash");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-    // delete all completed
-    //@DeleteMapping
+    @PutMapping("/trash/completed")
+    public ResponseEntity<String> moveCompletedTasksToTrash() {
+        boolean success = taskService.moveAllCompletedToTrash();
+        if (!success) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("All completed tasks moved to trash");
+    }
+
+    // restore task from trashcan
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<TaskDTO> restoreTaskFromTrash(@PathVariable String id) {
+        boolean success = taskService.restoreFromTrash(id);
+        if (!success) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<TaskDTO> foundTask = taskService.findTaskById(id);
+        return foundTask
+                .map(taskDTO -> ResponseEntity.ok().body(taskDTO))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+    }
 
 }
