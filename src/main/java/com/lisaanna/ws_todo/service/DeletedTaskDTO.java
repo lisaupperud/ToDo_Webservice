@@ -1,38 +1,28 @@
-package com.lisaanna.ws_todo.entity;
+package com.lisaanna.ws_todo.service;
 
-import jakarta.persistence.*;
-import org.springframework.data.mongodb.core.mapping.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.List;
 
-@Document(collection = "task")
-public class DeletedTask {
-    @Id
-    private String id;
-    @Field("name")
+public class DeletedTaskDTO {
+
     private String name;
-    @Field("description")
+
     private String description;
-    @Field("is completed")
+
     private boolean completed;
-    @Field("tags")
+
     private List<String> tags;
 
-    public Task() {}
+    public DeletedTaskDTO() {}
 
-    public Task(String id, String name, String description, boolean completed, List<String> tags) {
-        this.id = id;
+    public DeletedTaskDTO(String name, String description, boolean completed, List<String> tags) {
         this.name = name;
         this.description = description;
         this.completed = completed;
         this.tags = tags;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

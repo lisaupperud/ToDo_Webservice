@@ -1,10 +1,12 @@
 package com.lisaanna.ws_todo.entity;
 
-import jakarta.persistence.*;
-import org.springframework.data.mongodb.core.mapping.*;
+import jakarta.persistence.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.List;
 
-@Document(collection = "task")
+@Document(collection = "trashcan")
 public class DeletedTask {
     @Id
     private String id;
@@ -17,9 +19,9 @@ public class DeletedTask {
     @Field("tags")
     private List<String> tags;
 
-    public Task() {}
+    public DeletedTask() {}
 
-    public Task(String id, String name, String description, boolean completed, List<String> tags) {
+    public DeletedTask(String id, String name, String description, boolean completed, List<String> tags) {
         this.id = id;
         this.name = name;
         this.description = description;
