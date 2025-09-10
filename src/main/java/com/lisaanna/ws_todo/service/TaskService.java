@@ -52,6 +52,42 @@ public class TaskService {
         return taskDTO;
     }
 
+    // patch
+    public TaskDTO updateTask(String id, TaskDTO taskDTO) {
+        Task existingTask = taskRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Task not found"));
+
+        if (taskDTO.getName() != null) {
+            existingTask.setName(taskDTO.getName());
+        }
+        if (taskDTO.getDescription() != null) {
+            existingTask.setDescription(taskDTO.getDescription());
+        }
+        if (taskDTO.getCompleted()) {
+            existingTask.setCompleted(taskDTO.getCompleted());
+        }
+        if (taskDTO.getTags() != null) {
+            existingTask.setTags(taskDTO.getTags());
+        }
+
+        Task updatedTask = taskRepository.save(existingTask);
+        return taskMapper.mapToTaskDTO(updatedTask);
+    }
+
+    // patch
+    public TaskDTO completeTask(String id) {
+        Task existingTask = taskRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Task not found"));
+
+        if (!existingTask.getCompleted()) {
+            existingTask.setCompleted(true);
+        }
+
+        Task updatedTask = taskRepository.save(existingTask);
+        return taskMapper.mapToTaskDTO(updatedTask);
+    }
+
+    /*
     // put
     public Task update(String id, TaskDTO task) {
 
@@ -68,6 +104,7 @@ public class TaskService {
 
         return taskRepository.save(updatedTask);
     }
+    */
 
     // delete
     public void delete(String id) {
