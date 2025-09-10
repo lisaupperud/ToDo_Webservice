@@ -48,8 +48,16 @@ public class TaskController {
         return ResponseEntity.notFound().build();
     }
 
-    // get filtered
-    //@GetMapping
+    @GetMapping("/{tags}")
+    public ResponseEntity<List<TaskDTO>> findByTags(@PathVariable String tags) {
+        List<TaskDTO> taskByTags = taskService.findTaskByTag(tags);
+
+        if (taskByTags.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok().body(taskByTags);
+    }
 
     // create new
     @PostMapping("/new")
