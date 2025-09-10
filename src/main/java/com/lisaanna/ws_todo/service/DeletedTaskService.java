@@ -1,6 +1,7 @@
 package com.lisaanna.ws_todo.service;
 
-import com.lisaanna.ws_todo.entity.Task;
+import com.lisaanna.ws_todo.component.DeletedTaskMapper;
+import com.lisaanna.ws_todo.entity.DeletedTask;
 import com.lisaanna.ws_todo.repository.DeletedTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,11 @@ public class DeletedTaskService {
     @Autowired
     DeletedTaskRepository deletedTaskRepository;
 
+    DeletedTaskMapper deletedTaskMapper;
 
-
-    public DeletedTaskService(DeletedTaskRepository deletedTaskRepository) {
+    public DeletedTaskService(DeletedTaskRepository deletedTaskRepository,  DeletedTaskMapper deletedTaskMapper) {
         this.deletedTaskRepository = deletedTaskRepository;
+        this.deletedTaskMapper = deletedTaskMapper;
     }
 
     // GET - all
