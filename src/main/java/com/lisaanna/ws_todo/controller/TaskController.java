@@ -48,7 +48,7 @@ public class TaskController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{tags}")
+    @GetMapping("/tag/{tags}")
     public ResponseEntity<List<TaskDTO>> findByTags(@PathVariable String tags) {
         List<TaskDTO> taskByTags = taskService.findTaskByTag(tags);
 
