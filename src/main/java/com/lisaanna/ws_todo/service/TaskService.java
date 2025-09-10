@@ -3,9 +3,13 @@ package com.lisaanna.ws_todo.service;
 import com.lisaanna.ws_todo.component.TaskMapper;
 import com.lisaanna.ws_todo.entity.Task;
 import com.lisaanna.ws_todo.repository.TaskRepository;
+import com.mongodb.client.*;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,12 +19,15 @@ public class TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
-
     private final TaskMapper taskMapper;
+    private final MongoCollection<Document> taskCollection;
+    private final MongoCollection<Document> trashCollection;
 
-    public TaskService(TaskRepository taskRepository, TaskMapper taskMapper) {
+    public TaskService(TaskRepository taskRepository, TaskMapper taskMapper, MongoClient mongoClient, @Value("${spring.data.mongodb.database}") String dbName) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
+        this.taskCollection = mongoClient.getDatabase(dbName).getCollection("task");
+        this.trashCollection = mongoClient.getDatabase(dbName).getCollection("trashcan");
     }
 
     // get - auto filtered
@@ -105,9 +112,29 @@ public class TaskService {
     }
     */
 
-    // delete
-    public void moveToTrash(String id) {
+    // Move document from task to trashcan
+    public boolean moveToTrash(String id) {
+        return moveDocument(taskCollection, trashCollection, id);
+    }
 
+    // Move document from trashcan to task
+    public boolean restoreFromTrash(String id) {
+        return moveDocument(trashCollection, taskCollection, id);
+    }
 
+    private boolean moveDocument(MongoCollection<Document> from,
+                                 MongoCollection<Document> to,
+                                 String id) {
+        Bson filter = Filters.eq("_id", id);
+
+        Document doc = from.find(filter).first();
+        if (doc == null) {
+            System.out.println("Document not found.");
+            return false;
+        }
+
+        to.insertOne(doc);
+        from.deleteOne(filter);
+        return true;
     }
 }
