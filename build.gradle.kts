@@ -34,3 +34,18 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+val buildFrontend by tasks.registering(Exec::class) {
+    workingDir = file("frontend")
+    commandLine = listOf("npm", "run", "build")
+}
+
+val copyFrontend by tasks.registering(Copy::class) {
+    dependsOn(buildFrontend)
+    from("frontend/dist")
+    into("src/main/resources/static")
+}
+
+tasks.named<ProcessResources>("processResources") {
+    dependsOn(copyFrontend)
+}

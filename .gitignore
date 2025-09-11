@@ -43,3 +43,7 @@ out/
 .env
 .env.local
 
+# Ignore frontend build files
+/src/main/resources/static/*
+!/src/main/resources/static/.gitkeep
+
