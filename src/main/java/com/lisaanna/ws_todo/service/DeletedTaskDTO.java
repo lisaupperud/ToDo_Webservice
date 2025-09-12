@@ -1,9 +1,6 @@
 package com.lisaanna.ws_todo.service;
 
-import com.lisaanna.ws_todo.Priority;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.lisaanna.ws_todo.model.Priority;
 
 import java.util.List;
 

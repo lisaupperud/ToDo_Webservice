@@ -52,6 +52,7 @@ public class TaskController {
         return ResponseEntity.notFound().build();
     }
 
+    // TODO: look @ path's --> might change to /sort/{tags}
     @GetMapping("/tag/{tags}")
     @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<List<TaskDTO>> findByTags(@PathVariable String tags) {
@@ -62,6 +63,26 @@ public class TaskController {
         }
 
         return ResponseEntity.ok().body(taskByTags);
+    }
+
+    @GetMapping("/sort/priority")
+    @RateLimiter(name = "myRateLimiter")
+    public ResponseEntity<List<TaskDTO>> findAndSortByPriority() {
+        List<TaskDTO> sortedTasks = taskService.findTasksWithPriority();
+        if (sortedTasks.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return  ResponseEntity.ok().body(sortedTasks);
+    }
+
+    @GetMapping("/sort/no-priority")
+    @RateLimiter(name = "myRateLimiter")
+    public ResponseEntity<List<TaskDTO>> findByNoPriority() {
+        List<TaskDTO> noPriorityTasks = taskService.findTaskWithoutPriority();
+        if (noPriorityTasks.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return  ResponseEntity.ok().body(noPriorityTasks);
     }
 
     // create new
@@ -135,6 +156,7 @@ public class TaskController {
         }
 
         Optional<TaskDTO> foundTask = taskService.findTaskById(id);
+
         return foundTask
                 .map(taskDTO -> ResponseEntity.ok().body(taskDTO))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());

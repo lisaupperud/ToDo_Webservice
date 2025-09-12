@@ -1,7 +1,7 @@
 package com.lisaanna.ws_todo.service;
 
 import com.lisaanna.ws_todo.component.DeletedTaskMapper;
-import com.lisaanna.ws_todo.entity.DeletedTask;
+import com.lisaanna.ws_todo.model.DeletedTask;
 import com.lisaanna.ws_todo.repository.DeletedTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

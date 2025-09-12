@@ -1,6 +1,6 @@
 package com.lisaanna.ws_todo.component;
 
-import com.lisaanna.ws_todo.entity.DeletedTask;
+import com.lisaanna.ws_todo.model.DeletedTask;
 import com.lisaanna.ws_todo.service.DeletedTaskDTO;
 import org.springframework.stereotype.Component;
 

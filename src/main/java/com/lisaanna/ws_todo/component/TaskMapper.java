@@ -1,6 +1,6 @@
 package com.lisaanna.ws_todo.component;
 
-import com.lisaanna.ws_todo.entity.Task;
+import com.lisaanna.ws_todo.model.Task;
 import com.lisaanna.ws_todo.service.TaskDTO;
 import org.springframework.stereotype.Component;
 

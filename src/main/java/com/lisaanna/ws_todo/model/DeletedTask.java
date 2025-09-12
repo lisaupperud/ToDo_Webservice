@@ -1,6 +1,5 @@
-package com.lisaanna.ws_todo.entity;
+package com.lisaanna.ws_todo.model;
 
-import com.lisaanna.ws_todo.Priority;
 import jakarta.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

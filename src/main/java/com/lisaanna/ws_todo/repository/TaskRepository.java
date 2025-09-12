@@ -1,6 +1,7 @@
 package com.lisaanna.ws_todo.repository;
 
-import com.lisaanna.ws_todo.entity.Task;
+import com.lisaanna.ws_todo.model.Priority;
+import com.lisaanna.ws_todo.model.Task;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -19,4 +20,12 @@ public interface TaskRepository extends MongoRepository<Task, String> {
 
     @Query("{'tags': ?0}")
     List<Task> findByTags(String tags);
+
+    @Query("{ 'priority': { '$exists': true } }")
+    List<Task> findTasksWithPriority();
+
+    @Query("{ 'priority': { '$exists': false } }")
+    List<Task> findTasksWithoutPriority();
+
+
 }

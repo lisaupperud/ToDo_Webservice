@@ -1,7 +1,8 @@
 package com.lisaanna.ws_todo.service;
 
 import com.lisaanna.ws_todo.component.TaskMapper;
-import com.lisaanna.ws_todo.entity.Task;
+import com.lisaanna.ws_todo.model.Priority;
+import com.lisaanna.ws_todo.model.Task;
 import com.lisaanna.ws_todo.repository.TaskRepository;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,6 +59,20 @@ public class TaskService {
     // get - by tags
     public List<TaskDTO> findTaskByTag(String tag) {
         return taskRepository.findByTags(tag).stream().map(taskMapper::mapToTaskDTO).collect(Collectors.toList());
+    }
+
+    // get - & sort by priority
+    public List<TaskDTO> findTasksWithPriority() {
+        return taskRepository.findTasksWithPriority()
+                .stream()
+                .map(taskMapper::mapToTaskDTO)
+                .sorted(Comparator.comparing(TaskDTO::getPriority).reversed())
+                .toList();
+    }
+
+    // get - without prio
+    public List<TaskDTO> findTaskWithoutPriority() {
+        return taskRepository.findTasksWithoutPriority().stream().map(taskMapper::mapToTaskDTO).toList();
     }
 
     // post
