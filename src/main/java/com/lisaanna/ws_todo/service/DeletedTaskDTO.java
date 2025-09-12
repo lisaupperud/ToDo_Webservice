@@ -1,5 +1,6 @@
 package com.lisaanna.ws_todo.service;
 
+import com.lisaanna.ws_todo.Priority;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,13 +17,16 @@ public class DeletedTaskDTO {
 
     private List<String> tags;
 
+    private Priority priority;
+
     public DeletedTaskDTO() {}
 
-    public DeletedTaskDTO(String name, String description, boolean completed, List<String> tags) {
+    public DeletedTaskDTO(String name, String description, boolean completed, List<String> tags,  Priority priority) {
         this.name = name;
         this.description = description;
         this.completed = completed;
         this.tags = tags;
+        this.priority = priority;
     }
 
     public String getName() {
@@ -55,5 +59,13 @@ public class DeletedTaskDTO {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 }

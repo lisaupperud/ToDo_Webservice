@@ -13,6 +13,7 @@ public class DeletedTaskMapper {
         deletedTask.setDescription(deletedTaskDTO.getDescription());
         deletedTask.setCompleted(deletedTaskDTO.getCompleted());
         deletedTask.setTags(deletedTaskDTO.getTags());
+        deletedTask.setPriority(deletedTaskDTO.getPriority());
         return deletedTask;
     }
 
@@ -22,6 +23,7 @@ public class DeletedTaskMapper {
         deletedTaskDTO.setDescription(deletedTask.getDescription());
         deletedTaskDTO.setCompleted(deletedTask.getCompleted());
         deletedTaskDTO.setTags(deletedTask.getTags());
+        deletedTaskDTO.setPriority(deletedTask.getPriority());
         return deletedTaskDTO;
     }
 }
