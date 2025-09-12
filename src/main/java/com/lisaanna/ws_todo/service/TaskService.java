@@ -145,4 +145,10 @@ public class TaskService {
         from.deleteOne(filter);
         return true;
     }
+
+    public List<TaskRepository.TagCount> getMostUsedTags(){
+        List<TaskRepository.TagCount> tags = taskRepository.findMostUsedTags(10);
+        return tags;
+    }
+
 }

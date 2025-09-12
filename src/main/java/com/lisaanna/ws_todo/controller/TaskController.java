@@ -140,4 +140,13 @@ public class TaskController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
+    @GetMapping("/tag/stats")
+    @RateLimiter(name = "myRateLimiter")
+    public ResponseEntity<List> getTaskStats() {
+        if (taskService.getMostUsedTags().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(taskService.getMostUsedTags());
+    }
+
 }
