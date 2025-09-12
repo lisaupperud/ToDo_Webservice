@@ -1,11 +1,13 @@
-package com.lisaanna.ws_todo.entity;
+package com.lisaanna.ws_todo.model;
 
-import jakarta.persistence.*;
-import org.springframework.data.mongodb.core.mapping.*;
+import jakarta.persistence.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.List;
 
-@Document(collection = "task")
-public class Task {
+@Document(collection = "trashcan")
+public class DeletedTask {
     @Id
     private String id;
     @Field("name")
@@ -16,15 +18,18 @@ public class Task {
     private boolean completed;
     @Field("tags")
     private List<String> tags;
+    @Field("priority")
+    private Priority priority;
 
-    public Task() {}
+    public DeletedTask() {}
 
-    public Task(String id, String name, String description, boolean completed, List<String> tags) {
+    public DeletedTask(String id, String name, String description, boolean completed, List<String> tags,  Priority priority) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.completed = completed;
         this.tags = tags;
+        this.priority = priority;
     }
 
     public String getId() {
@@ -65,5 +70,13 @@ public class Task {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 }

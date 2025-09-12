@@ -1,6 +1,6 @@
 package com.lisaanna.ws_todo.repository;
 
-import com.lisaanna.ws_todo.entity.DeletedTask;
+import com.lisaanna.ws_todo.model.DeletedTask;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
