@@ -144,6 +144,7 @@ const Dashboard: React.FC = () => {
             <button onClick={navigateToRegisterTask}>+ Register New Task</button>
             <button onClick={handleMoveCompletedToTrash}>Move Completed to Trash</button>
 
+
             {error && <p style={{color: "red"}}>{error}</p>}
 
             {/* Search */}
