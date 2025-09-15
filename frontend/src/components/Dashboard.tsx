@@ -22,7 +22,6 @@ const Dashboard: React.FC = () => {
 
     const fetchTasks = async (url: string) => {
         setLoading(true);
-        setError(null);
 
         try {
             const response = await fetch(url);
@@ -58,7 +57,7 @@ const Dashboard: React.FC = () => {
         if (!searchValue.trim()) return;
 
         let endpoint = searchType === "name"
-            ? `/api/v1/tasks/${encodeURIComponent(searchValue)}`
+            ? `/api/v1/tasks/search/name/${encodeURIComponent(searchValue)}`
             : `/api/v1/tasks/tag/${encodeURIComponent(searchValue)}`;
 
         try {
@@ -68,11 +67,15 @@ const Dashboard: React.FC = () => {
             }
 
             const data = await response.json();
-            setTasks(Array.isArray(data) ? data : [data]);
+            if (data && Array.isArray(data) && data.length > 0) {
+                setTasks(data);
+                setError(null)
+            } else {
+                throw new Error("No tasks matching your search.")
+            }
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
-                setTasks([]);
             }
         }
     };
@@ -111,6 +114,26 @@ const Dashboard: React.FC = () => {
         navigate("/new");
     };
 
+    const handleMoveCompletedToTrash = async () => {
+        try {
+            const response = await fetch("/api/v1/tasks/trash/completed", {
+                method: "PUT"
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to move completed tasks to trash.");
+            }
+
+            const message = await response.text();
+            alert(message);
+            fetchTasks("/api/v1/tasks/"); // Refresh uncompleted tasks
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            }
+        }
+    };
+
     if (loading) return <p>Loading tasks...</p>;
     if (error) return <p style={{color: "red"}}>Error: {error}</p>;
     if (tasks.length === 0) return <p>No uncompleted tasks found.</p>;
@@ -119,9 +142,12 @@ const Dashboard: React.FC = () => {
         <div style={{maxWidth: "600px", margin: "0 auto", padding: "20px"}}>
             <h1>Uncompleted Tasks</h1>
             <button onClick={navigateToRegisterTask}>+ Register New Task</button>
+            <button onClick={handleMoveCompletedToTrash}>Move Completed to Trash</button>
+
+            {error && <p style={{color: "red"}}>{error}</p>}
 
             {/* Search */}
-            <div style={{ marginTop: "20px" }}>
+            <div style={{marginTop: "20px"}}>
                 <label>
                     <input
                         type="radio"
@@ -130,7 +156,7 @@ const Dashboard: React.FC = () => {
                         onChange={() => setSearchType("name")}
                     /> Search by Name
                 </label>
-                <label style={{ marginLeft: "20px" }}>
+                <label style={{marginLeft: "20px"}}>
                     <input
                         type="radio"
                         value="tag"
@@ -150,7 +176,7 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Filter */}
-            <div style={{ marginTop: "20px" }}>
+            <div style={{marginTop: "20px"}}>
                 <label>Filter tasks: </label>
                 <select value={filter} onChange={handleFilterChange}>
                     <option value="uncompleted">Uncompleted</option>
@@ -162,11 +188,10 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Tasks */}
-            <div style={{ marginTop: "20px" }}>
+            <div style={{marginTop: "20px"}}>
                 {loading && <p>Loading tasks...</p>}
-                {error && <p style={{ color: "red" }}>{error}</p>}
                 {!loading && tasks.length === 0 && <p>No tasks found.</p>}
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
                     {tasks
                         .filter((task) => filter === "completed" ? task.completed : true)
                         .map((task) => (

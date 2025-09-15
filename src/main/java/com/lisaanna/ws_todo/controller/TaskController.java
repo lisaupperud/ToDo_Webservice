@@ -52,6 +52,18 @@ public class TaskController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/search/name/{name}")
+    @RateLimiter(name = "myRateLimiter")
+    public ResponseEntity<List<TaskDTO>> searchTasksByName(@PathVariable String name) {
+        List<TaskDTO> matchedTasks = taskService.findTasksByNamePartial(name);
+
+        if (matchedTasks.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(matchedTasks);
+    }
+
     @GetMapping("/id/{id}")
     public ResponseEntity<TaskDTO> findTaskById(@PathVariable String id) {
         Optional<TaskDTO> foundTask = taskService.findTaskById(id);
