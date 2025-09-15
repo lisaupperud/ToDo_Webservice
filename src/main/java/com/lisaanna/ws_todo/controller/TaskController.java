@@ -52,6 +52,17 @@ public class TaskController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<TaskDTO> findTaskById(@PathVariable String id) {
+        Optional<TaskDTO> foundTask = taskService.findTaskById(id);
+
+        if (foundTask.isPresent()) {
+            TaskDTO taskDTO = foundTask.get();
+            return ResponseEntity.ok().body(taskDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     // TODO: look @ path's --> might change to /sort/{tags}
     @GetMapping("/tag/{tags}")
     @RateLimiter(name = "myRateLimiter")

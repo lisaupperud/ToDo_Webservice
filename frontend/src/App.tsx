@@ -14,7 +14,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/new" element={<TaskForm />} />
-
+                    <Route path="/edit/:id" element={<TaskForm />} />
                     <Route path="/stats" element={<TaskStats />} />
                 </Routes>
             </BrowserRouter>
