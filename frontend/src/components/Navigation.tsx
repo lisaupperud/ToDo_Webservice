@@ -6,6 +6,7 @@ const Navigation = () => {
             <Link to="/" style={{ marginRight: "10px" }}>Home</Link>
             <Link to="/new" style={{ marginRight: "10px" }}>Register Task</Link>
             <Link to="/stats">Task Stats</Link>
+            <Link to="/trashcan">Trashcan</Link>
         </nav>
     );
 };
