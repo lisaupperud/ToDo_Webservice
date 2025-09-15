@@ -37,7 +37,8 @@ tasks.withType<Test> {
 
 val buildFrontend by tasks.registering(Exec::class) {
     workingDir = file("frontend")
-    commandLine = listOf("npm", "run", "build")
+    commandLine = listOf("C:/Program Files/nodejs/npm.cmd", "run", "build")
+    //commandLine = listOf("npm", "run", "build")
 }
 
 val copyFrontend by tasks.registering(Copy::class) {
