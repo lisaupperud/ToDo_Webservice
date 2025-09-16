@@ -1,12 +1,13 @@
+import styles from "./Navigation.module.css";
 import {Link} from "react-router-dom";
 
 const Navigation = () => {
     return (
-        <nav style={{ padding: "1rem", backgroundColor: "#f0f0f0" }}>
-            <Link to="/" style={{ marginRight: "20px" }}>Home</Link>
-            <Link to="/new" style={{ marginRight: "20px" }}>Register Task</Link>
-            <Link to="/stats" style={{ marginRight: "20px" }}>Task Stats</Link>
-            <Link to="/trashcan" style={{ marginRight: "20px" }}>Trashcan</Link>
+        <nav className={styles.navbar}>
+            <Link to="/">Home</Link>
+            <Link to="/new">Register Task</Link>
+            <Link to="/stats">Task Stats</Link>
+            <Link to="/trashcan">Trashcan</Link>
         </nav>
     );
 };

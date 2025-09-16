@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import styles from "./Dashboard.module.css";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 interface DeletedTaskDTO {
     id: string;
@@ -82,42 +83,41 @@ const Trashcan: React.FC = () => {
     };
 
     return (
-        <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
+        <div style={{margin: "0 auto", padding: "20px"}}>
             <h1>🧺 Trashcan</h1>
             <button onClick={handleBack}>← Back to Dashboard</button>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {loading ? (
-                <p>Loading deleted tasks...</p>
-            ) : deletedTasks.length === 0 ? (
-                <p>No deleted tasks.</p>
-            ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "20px" }}>
-                    {deletedTasks.map(task => (
-                        <div
-                            key={task.id}
-                            style={{
-                                padding: "10px",
-                                border: "1px solid #ccc",
-                                borderRadius: "4px",
-                                backgroundColor: "#ffecec",
-                            }}
-                        >
-                            <p><strong>Name:</strong> {task.name}</p>
-                            {task.description && <p><strong>Description:</strong> {task.description}</p>}
-                            {task.tags && task.tags.length > 0 && (
-                                <p><strong>Tags:</strong> {task.tags.join(", ")}</p>
-                            )}
-                            {task.priority && <p><strong>Priority:</strong> {task.priority}</p>}
-                            <p><strong>Completed:</strong> {task.completed ? "Yes" : "No"}</p>
-                            <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                                <button onClick={() => handleRestore(task.id)}>♻️ Restore</button>
-                                <button onClick={() => handleDelete(task.id)}>❌ Permanently Delete</button>
+            <div className={styles.taskList}>
+                {error && <p style={{color: "red"}}>{error}</p>}
+                {loading ? (
+                    <p>Loading deleted tasks...</p>
+                ) : deletedTasks.length === 0 ? (
+                    <p>No deleted tasks.</p>
+                ) : (
+                    <div className={styles.posts}>
+                        {deletedTasks.map(task => (
+                            <div
+                                key={task.id}
+                                className={styles.taskCard}
+                            >
+                                <p><strong>Name:</strong> {task.name}</p>
+                                {task.description && <p><strong>Description:</strong> {task.description}</p>}
+                                {task.tags && task.tags.length > 0 && (
+                                    <p><strong>Tags:</strong> {task.tags.join(", ")}</p>
+                                )}
+                                {task.priority && <p><strong>Priority:</strong> {task.priority}</p>}
+                                <p><strong>Completed:</strong> {task.completed ? "Yes" : "No"}</p>
+                                <div style={{marginTop: "10px", display: "flex", gap: "10px"}}>
+                                    <button onClick={() => handleRestore(task.id)}>♻️ Restore</button>
+                                    <button onClick={() => handleDelete(task.id)}>❌ Permanently Delete</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+                        ))}
+                    </div>
+                )}
+            </div>
+
+
         </div>
     );
 };

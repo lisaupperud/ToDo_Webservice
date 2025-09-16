@@ -1,3 +1,4 @@
+import styles from "./Dashboard.module.css"
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import * as React from "react";
@@ -139,7 +140,7 @@ const Dashboard: React.FC = () => {
     if (tasks.length === 0) return <p>No uncompleted tasks found.</p>;
 
     return (
-        <div style={{maxWidth: "600px", margin: "0 auto", padding: "20px"}}>
+        <div style={{margin: "0 auto", padding: "20px"}}>
             <h1>Uncompleted Tasks</h1>
             <button onClick={navigateToRegisterTask}>+ Register New Task</button>
             <button onClick={handleMoveCompletedToTrash}>Move Completed to Trash</button>
@@ -189,21 +190,16 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Tasks */}
-            <div style={{marginTop: "20px"}}>
+            <div className={styles.taskList}>
                 {loading && <p>Loading tasks...</p>}
                 {!loading && tasks.length === 0 && <p>No tasks found.</p>}
-                <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
+                <div className={styles.posts}>
                     {tasks
                         .filter((task) => filter === "completed" ? task.completed : true)
                         .map((task) => (
                             <div
                                 key={task.id}
-                                style={{
-                                    padding: "10px",
-                                    border: "1px solid #ccc",
-                                    borderRadius: "4px",
-                                    backgroundColor: "#f9f9f9",
-                                }}
+                                className={styles.taskCard}
                             >
                                 <p><strong>Name:</strong> {task.name}</p>
                                 {task.description && (

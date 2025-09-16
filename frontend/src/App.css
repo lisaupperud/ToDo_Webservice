@@ -1,3 +1,11 @@
+body {
+    background: #d5d2ff;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
