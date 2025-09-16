@@ -52,8 +52,8 @@ public class TaskService {
 
     // get - list of names containing search term
     public List<TaskDTO> findTasksByNamePartial(String name) {
-        List<Task> foundtasks = taskRepository.findByNameRegex(name);
-        return foundtasks.stream()
+        List<Task> foundTasks = taskRepository.findByNameRegex(name);
+        return foundTasks.stream()
                 .map(taskMapper::mapToTaskDTO)
                 .collect(Collectors.toList());
     }
