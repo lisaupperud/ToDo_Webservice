@@ -1,3 +1,18 @@
+# ---------- Stage 1: Build the JAR ----------
+FROM gradle:8.5-jdk21 AS build
+WORKDIR /app
+
+# Copy Gradle config files first (for better caching)
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle gradle
+RUN ./gradlew --version
+
+# Copy the full project
+COPY . .
+
+# Build the application (skip tests for faster CI/CD builds)
+RUN ./gradlew clean build -x test --no-daemon
+
 # Use an official OpenJDK runtime as a parent image
 FROM amazoncorretto:21
 # Set the working directory in the container

@@ -1,6 +1,5 @@
-# Stage 1: Build the frontend
+# ---------- Stage 1: Build the frontend ----------
 FROM node:20 AS build
-
 WORKDIR /app
 
 COPY package*.json ./
@@ -9,15 +8,20 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Serve the frontend using Nginx
+# ---------- Stage 2: Serve with Nginx ----------
 FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
 
-# Copy the build output from the previous stage
-COPY --from=build /app/dist /usr/share/nginx/html
+# Copy build output
+COPY --from=build /app/dist .
 
-# Expose port 5173
-EXPOSE 5173
+# Copy custom nginx config (optional, for React routing)
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Start Nginx in foreground
+# Expose production port
+EXPOSE 80
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
+
 
