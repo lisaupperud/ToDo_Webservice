@@ -140,53 +140,54 @@ const Dashboard: React.FC = () => {
     if (tasks.length === 0) return <p>No uncompleted tasks found.</p>;
 
     return (
-        <div style={{margin: "0 auto", padding: "20px"}}>
+        <div className={styles.biggestContainer}>
             <h1>Uncompleted Tasks</h1>
-            <button onClick={navigateToRegisterTask}>+ Register New Task</button>
-            <button onClick={handleMoveCompletedToTrash}>Move Completed to Trash</button>
+            <div className={styles.searchAndFilter}>
+                <button onClick={navigateToRegisterTask}>+ Register New Task</button>
+                <button onClick={handleMoveCompletedToTrash}>Move Completed to Trash</button>
 
+                {error && <p style={{color: "red"}}>{error}</p>}
 
-            {error && <p style={{color: "red"}}>{error}</p>}
-
-            {/* Search */}
-            <div style={{marginTop: "20px"}}>
-                <label>
-                    <input
-                        type="radio"
-                        value="name"
-                        checked={searchType === "name"}
-                        onChange={() => setSearchType("name")}
-                    /> Search by Name
-                </label>
-                <label style={{marginLeft: "20px"}}>
-                    <input
-                        type="radio"
-                        value="tag"
-                        checked={searchType === "tag"}
-                        onChange={() => setSearchType("tag")}
-                    /> Search by Tag
-                </label>
-                <div>
-                    <input
-                        type="text"
-                        placeholder={`Enter ${searchType}`}
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                    />
-                    <button onClick={handleSearch}>Search</button>
+                {/* Search */}
+                <div style={{marginTop: "20px"}}>
+                    <label>
+                        <input
+                            type="radio"
+                            value="name"
+                            checked={searchType === "name"}
+                            onChange={() => setSearchType("name")}
+                        /> Search by Name
+                    </label>
+                    <label style={{marginLeft: "20px"}}>
+                        <input
+                            type="radio"
+                            value="tag"
+                            checked={searchType === "tag"}
+                            onChange={() => setSearchType("tag")}
+                        /> Search by Tag
+                    </label>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder={`Enter ${searchType}`}
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                        <button onClick={handleSearch}>Search</button>
+                    </div>
                 </div>
-            </div>
 
-            {/* Filter */}
-            <div style={{marginTop: "20px"}}>
-                <label>Filter tasks: </label>
-                <select value={filter} onChange={handleFilterChange}>
-                    <option value="uncompleted">Uncompleted</option>
-                    <option value="all">All</option>
-                    <option value="completed">Completed (client filtered)</option>
-                    <option value="priority">Sorted by Priority</option>
-                    <option value="no-priority">No Priority</option>
-                </select>
+                {/* Filter */}
+                <div style={{marginTop: "20px"}}>
+                    <label>Filter tasks: </label>
+                    <select value={filter} onChange={handleFilterChange}>
+                        <option value="uncompleted">Uncompleted</option>
+                        <option value="all">All</option>
+                        <option value="completed">Completed (client filtered)</option>
+                        <option value="priority">Sorted by Priority</option>
+                        <option value="no-priority">No Priority</option>
+                    </select>
+                </div>
             </div>
 
             {/* Tasks */}

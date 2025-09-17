@@ -1,3 +1,4 @@
+import styles from "./TaskForm.module.css";
 import {useEffect, useState} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -77,18 +78,12 @@ const TaskForm = () => {
                 setMessage(err.message)
             }
         }
-
-        /*
-        const tags = form.tagsInput
-            ? form.tagsInput.split(",").map(tag => tag.trim()).filter(tag => tag)
-            : [];
-        */
     };
 
     return (
-        <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
+        <div className={styles.biggestContainer}>
             <h2>{isEditMode ? "Edit Task" : "Create New Task"}</h2>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <form onSubmit={handleSubmit} className={styles.formContainer}>
                 <input
                     name="name"
                     placeholder="Task name"

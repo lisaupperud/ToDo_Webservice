@@ -1,3 +1,4 @@
+import styles from "./TaskStats.module.css";
 import {useEffect, useState} from "react";
 
 type TagStats = {
@@ -40,12 +41,12 @@ const TaskStats = () => {
     }, []);
 
     return (
-        <div>
+        <div className={styles.biggestContainer}>
             <h2>Task Tag Statistics</h2>
             {message && <p>{message}</p>}
 
             {tags.length > 0 && (
-                <ul>
+                <ul className={styles.statContainer}>
                     {tags.map((tagStat, index) => (
                         <li key={index}>
                             {tagStat.tag} — used {tagStat.count} times

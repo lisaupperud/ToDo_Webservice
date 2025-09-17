@@ -7,7 +7,6 @@ import TaskStats from './components/TaskStats';
 import Trashcan from "./components/Trashcan.tsx";
 
 function App() {
-
     return (
         <>
             <BrowserRouter>
