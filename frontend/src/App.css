@@ -6,6 +6,11 @@ body {
     width: 100%;
 }
 
+h1, h2 {
+    font-family: "Courier New", serif;
+    color: #123e06;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

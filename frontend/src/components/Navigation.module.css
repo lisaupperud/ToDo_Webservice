@@ -1,6 +1,9 @@
 .navbar {
     display: flex;
     padding: 1rem;
-    background-color: #f0f0f0;
+    background-color: #f7ffae;
+    color: #123e06;
+    font-family: "Courier New", serif;
+    font-weight: bolder;
     justify-content: space-evenly;
 }
