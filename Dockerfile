@@ -2,24 +2,26 @@
 FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 
-# Copy Gradle config files first (for better caching)
+# Copy Gradle config first for caching
 COPY build.gradle settings.gradle gradlew ./
 COPY gradle gradle
 RUN ./gradlew --version
 
-# Copy the full project
+# Copy all source code
 COPY . .
 
-# Build the application (skip tests for faster CI/CD builds)
-RUN ./gradlew clean build -x test --no-daemon
+# Build the Spring Boot JAR (skip tests to speed up CI/CD)
+RUN ./gradlew clean bootJar -x test --no-daemon
 
-# Use an official OpenJDK runtime as a parent image
+# ---------- Stage 2: Run the app ----------
 FROM amazoncorretto:21
-# Set the working directory in the container
 WORKDIR /app
-# Copy the JAR file into the container named /app and renames it to ToDo_Webservice
-COPY build/libs/ws_todo-0.0.1-SNAPSHOT.jar /app/ToDo_Webservice.jar
-# Expose the port that the application will run on (Must reflect Spring Boot's PORT)
+
+# Copy the JAR built in the previous stage
+COPY --from=build /app/build/libs/ws_todo-0.0.1-SNAPSHOT.jar /app/ToDo_Webservice.jar
+
+# Expose the Spring Boot port
 EXPOSE 8080
-# Command to run the app
+
+# Start the app
 ENTRYPOINT ["java", "-jar", "/app/ToDo_Webservice.jar"]
