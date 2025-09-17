@@ -6,6 +6,8 @@ import java.util.List;
 
 public class TaskDTO {
 
+    private String id;
+
     @NotBlank
     @Size(min = 1, max = 50)
     private String name;
@@ -28,6 +30,14 @@ public class TaskDTO {
         this.completed = completed;
         this.tags = tags;
         this.priority = priority;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

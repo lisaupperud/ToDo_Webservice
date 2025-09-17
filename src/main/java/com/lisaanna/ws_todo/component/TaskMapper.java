@@ -19,6 +19,7 @@ public class TaskMapper {
 
     public TaskDTO mapToTaskDTO(Task task) {
         TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setId(task.getId());
         taskDTO.setName(task.getName());
         taskDTO.setDescription(task.getDescription());
         taskDTO.setCompleted(task.getCompleted());

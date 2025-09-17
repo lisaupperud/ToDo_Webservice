@@ -50,6 +50,14 @@ public class TaskService {
         return foundTask.map(taskMapper::mapToTaskDTO);
     }
 
+    // get - list of names containing search term
+    public List<TaskDTO> findTasksByNamePartial(String name) {
+        List<Task> foundTasks = taskRepository.findByNameRegex(name);
+        return foundTasks.stream()
+                .map(taskMapper::mapToTaskDTO)
+                .collect(Collectors.toList());
+    }
+
     // get - single by id
     public Optional<TaskDTO> findTaskById(String id) {
         Optional<Task> foundTask = taskRepository.findById(id);

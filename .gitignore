@@ -53,5 +53,5 @@ frontend/dist/
 src/main/resources/static/
 frontend/package-lock.json
 
-
-
+# Node / backend
+node_modules

@@ -53,6 +53,29 @@ public class TaskController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/search/name/{name}")
+    @RateLimiter(name = "myRateLimiter")
+    public ResponseEntity<List<TaskDTO>> searchTasksByName(@PathVariable String name) {
+        List<TaskDTO> matchedTasks = taskService.findTasksByNamePartial(name);
+
+        if (matchedTasks.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(matchedTasks);
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<TaskDTO> findTaskById(@PathVariable String id) {
+        Optional<TaskDTO> foundTask = taskService.findTaskById(id);
+
+        if (foundTask.isPresent()) {
+            TaskDTO taskDTO = foundTask.get();
+            return ResponseEntity.ok().body(taskDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     // TODO: look @ path's --> might change to /sort/{tags}
     @GetMapping("/tag/{tags}")
     @RateLimiter(name = "myRateLimiter")

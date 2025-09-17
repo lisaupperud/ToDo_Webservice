@@ -13,6 +13,9 @@ public interface TaskRepository extends MongoRepository<Task, String> {
 
     Optional<Task> findByName(String name);
 
+    @Query("{ 'name': { $regex: ?0, $options: 'i' } }")
+    List<Task> findByNameRegex(String name);
+
     @Query("{'completed': false}")
     List<Task> findByNotCompleted();
 

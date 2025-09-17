@@ -9,6 +9,7 @@ export default defineConfig({
                 target: 'http://localhost:8080', // Spring Boot port
                 changeOrigin: true,
                 secure: false,
+                rewrite: (path) => path.replace(/^\/api/, ''),
             },
         },
     },
