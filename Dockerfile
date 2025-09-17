@@ -2,6 +2,10 @@
 FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 
+# Copy Gradle wrapper first
+COPY gradlew .
+RUN chmod +x gradlew
+
 # Copy Gradle config first for caching
 COPY build.gradle.kts settings.gradle.kts gradlew ./
 COPY gradle gradle
