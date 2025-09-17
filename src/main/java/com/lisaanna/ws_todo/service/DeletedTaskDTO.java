@@ -1,7 +1,6 @@
 package com.lisaanna.ws_todo.service;
 
 import com.lisaanna.ws_todo.model.Priority;
-
 import java.util.List;
 
 public class DeletedTaskDTO {

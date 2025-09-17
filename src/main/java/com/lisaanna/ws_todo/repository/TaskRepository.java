@@ -25,6 +25,12 @@ public interface TaskRepository extends MongoRepository<Task, String> {
     @Query("{'tags': ?0}")
     List<Task> findByTags(String tags);
 
+    @Query("{ 'priority': { '$exists': true } }")
+    List<Task> findTasksWithPriority();
+
+    @Query("{ 'priority': { '$exists': false } }")
+    List<Task> findTasksWithoutPriority();
+
     @Aggregation(pipeline = {
             "{ '$unwind': '$tags' }",
             "{ '$group': { '_id': '$tags', 'count': { '$sum': 1 } } }",
@@ -40,9 +46,4 @@ public interface TaskRepository extends MongoRepository<Task, String> {
         int getCount();
     }
 
-    @Query("{ 'priority': { '$exists': true } }")
-    List<Task> findTasksWithPriority();
-
-    @Query("{ 'priority': { '$exists': false } }")
-    List<Task> findTasksWithoutPriority();
 }

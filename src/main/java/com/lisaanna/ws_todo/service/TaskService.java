@@ -1,7 +1,6 @@
 package com.lisaanna.ws_todo.service;
 
 import com.lisaanna.ws_todo.component.TaskMapper;
-import com.lisaanna.ws_todo.model.Priority;
 import com.lisaanna.ws_todo.model.Task;
 import com.lisaanna.ws_todo.repository.TaskRepository;
 import com.mongodb.client.*;
@@ -12,7 +11,6 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -83,14 +81,14 @@ public class TaskService {
         return taskRepository.findTasksWithoutPriority().stream().map(taskMapper::mapToTaskDTO).toList();
     }
 
-    // post
+    // post - new task
     public TaskDTO saveNewTask(TaskDTO taskDTO) {
         Task task = taskMapper.mapToTask(taskDTO);
         taskRepository.save(task);
         return taskDTO;
     }
 
-    // patch
+    // patch - update task
     public TaskDTO updateTask(String id, TaskDTO taskDTO) {
         Task existingTask = taskRepository.findById(id)
                 .orElse(null);
@@ -112,7 +110,7 @@ public class TaskService {
         return taskMapper.mapToTaskDTO(updatedTask);
     }
 
-    // patch
+    // patch - set task to 'complete'
     public TaskDTO completeTask(String id) {
         Task existingTask = taskRepository.findById(id)
                 .orElse(null);
@@ -169,6 +167,7 @@ public class TaskService {
         return true;
     }
 
+    // get - most used tags
     public List<TaskRepository.TagCount> getMostUsedTags(){
         List<TaskRepository.TagCount> tags = taskRepository.findMostUsedTags(10);
         return tags;
