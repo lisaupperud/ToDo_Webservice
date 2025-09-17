@@ -3,7 +3,7 @@ FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 
 # Copy Gradle config first for caching
-COPY build.gradle settings.gradle gradlew ./
+COPY build.gradle settings.gradle.kts gradlew ./
 COPY gradle gradle
 RUN ./gradlew --version
 
