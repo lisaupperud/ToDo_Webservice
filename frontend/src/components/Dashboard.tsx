@@ -21,36 +21,40 @@ const Dashboard: React.FC = () => {
     const [filter, setFilter] = useState<"uncompleted" | "all" | "completed" | "priority" | "no-priority">("uncompleted");
     const navigate = useNavigate();
 
-    const fetchTasks = async (url: string) => {
+    const API_BASE = import.meta.env.PROD
+        ? 'http://ws_todo_backend:8080/v1'
+        : '/v1';
+
+    const fetchTasks = async (endpoint: string) => {
         setLoading(true);
 
         try {
-            const response = await fetch(url);
+            const response = await fetch(`${API_BASE}${endpoint}`);
             if (!response.ok && response.status !== 204) {
                 throw new Error(`Error fetching tasks: ${response.statusText}`);
             }
             const data: TaskDTO[] = await response.json();
             setTasks(data);
         } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            }
+            if (err instanceof Error) setError(err.message);
         } finally {
             setLoading(false);
         }
     };
+
     useEffect(() => {
-        let endpoint = "/api/v1/tasks/";
+        let endpoint = "/tasks";
         switch (filter) {
             case "all":
-                endpoint = "/api/v1/tasks/all"
+                endpoint = "/tasks/all";
                 break;
             case "priority":
-                endpoint = "/api/v1/tasks/sort/no-priority"
+                endpoint = "/tasks/sort/no-priority";
                 break;
             default:
-                endpoint = "/api/v1/tasks/"
+                endpoint = "/tasks/";
         }
+
         fetchTasks(endpoint);
     }, [filter]);
 

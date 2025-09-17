@@ -1,0 +1,44 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile  # your backend Dockerfile
+    container_name: ws_todo_backend
+    ports:
+      - "8080:8080"           # map host port 8080 to container port 8080
+    environment:
+      - MONGO_URI=mongodb+srv://todo:lisaanna@ws-todo.np7q3xk.mongodb.net/?retryWrites=true&w=majority&appName=WS-ToDo
+      - DB_NAME=todo
+    depends_on:
+      - mongo
+    networks:
+      - ws_todo_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile  # frontend Dockerfile
+    container_name: ws_todo_frontend
+    ports:
+      - "5173:80"           # map host port 5173 to container port 80 (Nginx default)
+    depends_on:
+      - backend
+    networks:
+      - ws_todo_network
+
+  mongo:
+    image: mongo:7.0
+    container_name: ws_todo_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - ws_todo_network
+
+volumes:
+  mongo-data:
+
+networks:
+  ws_todo_network:
+    driver: bridge
