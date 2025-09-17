@@ -1,5 +1,6 @@
 package com.lisaanna.ws_todo.controller;
 
+import com.lisaanna.ws_todo.repository.TaskRepository;
 import com.lisaanna.ws_todo.service.TaskDTO;
 import com.lisaanna.ws_todo.service.TaskService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
@@ -20,7 +21,6 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    // TODO: look at all list endpoints -> return 204 for empty list of 200 w/ empty list ([])
     @GetMapping("/")
     @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<List<TaskDTO>> findNotCompleted() {
@@ -104,11 +104,12 @@ public class TaskController {
     @PatchMapping("/update/{id}")
     @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<TaskDTO> updateTask(@PathVariable String id, @RequestBody TaskDTO taskDTO) {
-        if (taskDTO == null) {
-            return ResponseEntity.badRequest().build();
+        TaskDTO updatedTaskDTO = taskService.updateTask(id, taskDTO);
+
+        if (updatedTaskDTO == null) {
+            return ResponseEntity.notFound().build();
         }
 
-        TaskDTO updatedTaskDTO = taskService.updateTask(id, taskDTO);
         return ResponseEntity.status(HttpStatus.OK).body(updatedTaskDTO);
     }
 
@@ -116,11 +117,10 @@ public class TaskController {
     @PatchMapping("/complete/{id}")
     @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<TaskDTO> completeTask(@PathVariable String id) {
-        if (id == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         TaskDTO updatedTaskDTO = taskService.completeTask(id);
+        if (updatedTaskDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.status(HttpStatus.OK).body(updatedTaskDTO);
     }
 
@@ -129,7 +129,6 @@ public class TaskController {
     @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<String> moveTaskToTrash(@PathVariable String id) {
         boolean success = taskService.moveToTrash(id);
-
         if (success) {
             return ResponseEntity.ok("Task moved to trash");
         } else {
@@ -142,7 +141,7 @@ public class TaskController {
     public ResponseEntity<String> moveCompletedTasksToTrash() {
         boolean success = taskService.moveAllCompletedToTrash();
         if (!success) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("No completed tasks found. Get to work!");
         }
         return ResponseEntity.ok("All completed tasks moved to trash");
     }
@@ -153,24 +152,22 @@ public class TaskController {
     public ResponseEntity<TaskDTO> restoreTaskFromTrash(@PathVariable String id) {
         boolean success = taskService.restoreFromTrash(id);
         if (!success) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         Optional<TaskDTO> foundTask = taskService.findTaskById(id);
 
-        // TODO: return a 404 instead of 500 ?
         return foundTask
                 .map(taskDTO -> ResponseEntity.ok().body(taskDTO))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/tag/stats")
     @RateLimiter(name = "myRateLimiter")
-    public ResponseEntity<List> getTaskStats() {
+    public ResponseEntity<List<TaskRepository.TagCount>> getTaskStats() {
         if (taskService.getMostUsedTags().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok().body(taskService.getMostUsedTags());
     }
-
 }
