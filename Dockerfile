@@ -2,6 +2,9 @@
 FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 
+# Install Node.js + npm (needed for frontend build)
+RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
+
 # Copy only necessary files for caching
 COPY build.gradle.kts settings.gradle.kts gradle/ ./
 
