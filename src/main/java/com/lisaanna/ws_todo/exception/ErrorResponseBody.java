@@ -1,13 +1,13 @@
-package com.lisaanna.ws_todo.controller;
+package com.lisaanna.ws_todo.exception;
 
-public class ApiError {
+public class ErrorResponseBody {
     private final long timestamp = System.currentTimeMillis();
     private int status;
     private String error;
     private String message;
     private String path;
 
-    public ApiError(int status, String error, String message, String path) {
+    public ErrorResponseBody(int status, String error, String message, String path) {
         this.status = status;
         this.error = error;
         this.message = message;
