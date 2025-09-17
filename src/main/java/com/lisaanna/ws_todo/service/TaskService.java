@@ -85,7 +85,7 @@ public class TaskService {
     // patch
     public TaskDTO updateTask(String id, TaskDTO taskDTO) {
         Task existingTask = taskRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Task not found"));
+                .orElse(null);
 
         if (taskDTO.getName() != null) {
             existingTask.setName(taskDTO.getName());
@@ -107,7 +107,7 @@ public class TaskService {
     // patch
     public TaskDTO completeTask(String id) {
         Task existingTask = taskRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Task not found"));
+                .orElse(null);
 
         if (!existingTask.getCompleted()) {
             existingTask.setCompleted(true);

@@ -37,12 +37,9 @@ public interface TaskRepository extends MongoRepository<Task, String> {
         int getCount();
     }
 
-
     @Query("{ 'priority': { '$exists': true } }")
     List<Task> findTasksWithPriority();
 
     @Query("{ 'priority': { '$exists': false } }")
     List<Task> findTasksWithoutPriority();
-
-
 }

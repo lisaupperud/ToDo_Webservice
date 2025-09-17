@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 // To handle exception thrown when limit for requests are reached
-@ControllerAdvice
-public class RateLimitExceptionHandler {
 
-    @ExceptionHandler(RequestNotPermitted.class)
+public class RateLimitExceptionHandler extends RuntimeException {
+
+    /*@ExceptionHandler(RequestNotPermitted.class)
     public ResponseEntity<Map<String, Object>> handleRequestNotPermitted(RequestNotPermitted e, HttpServletRequest request) {
 
         // Using a HashMap for key-values pairs
@@ -29,5 +29,5 @@ public class RateLimitExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.TOO_MANY_REQUESTS)
                 .body(jsonBody);
-    }
+    }*/
 }

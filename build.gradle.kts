@@ -37,8 +37,11 @@ tasks.withType<Test> {
 
 val buildFrontend by tasks.registering(Exec::class) {
     workingDir = file("frontend")
-    commandLine = listOf("npm", "run", "build")
+    // Full path to npm.cmd
+    val npmPath = "C:\\Program Files\\nodejs\\npm.cmd"
+    commandLine = listOf("cmd", "/c", npmPath, "run", "build")
 }
+
 
 val copyFrontend by tasks.registering(Copy::class) {
     dependsOn(buildFrontend)
