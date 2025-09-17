@@ -2,13 +2,14 @@
 FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 
-# Copy Gradle wrapper first
-COPY gradlew .
+# Copy Gradle wrapper and config first
+COPY gradlew build.gradle.kts settings.gradle.kts ./
+COPY gradle gradle
+
+# Make wrapper executable
 RUN chmod +x gradlew
 
-# Copy Gradle config first for caching
-COPY build.gradle.kts settings.gradle.kts gradlew ./
-COPY gradle gradle
+# Verify Gradle version (optional)
 RUN ./gradlew --version
 
 # Copy all source code
@@ -29,3 +30,4 @@ EXPOSE 8080
 
 # Start the app
 ENTRYPOINT ["java", "-jar", "/app/ToDo_Webservice.jar"]
+
