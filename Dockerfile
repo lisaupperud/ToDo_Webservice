@@ -2,21 +2,14 @@
 FROM gradle:8.5-jdk21 AS build
 WORKDIR /app
 
-# Copy Gradle wrapper and config first
-COPY gradlew build.gradle.kts settings.gradle.kts ./
-COPY gradle gradle
-
-# Make wrapper executable
-RUN chmod +x gradlew
-
-# Verify Gradle version (optional)
-RUN ./gradlew --version
+# Copy only necessary files for caching
+COPY build.gradle.kts settings.gradle.kts gradle/ ./
 
 # Copy all source code
 COPY . .
 
 # Build the Spring Boot JAR (skip tests to speed up CI/CD)
-RUN ./gradlew clean bootJar -x test --no-daemon
+RUN gradle clean bootJar -x test --no-daemon
 
 # ---------- Stage 2: Run the app ----------
 FROM amazoncorretto:21
@@ -30,4 +23,5 @@ EXPOSE 8080
 
 # Start the app
 ENTRYPOINT ["java", "-jar", "/app/ToDo_Webservice.jar"]
+
 
