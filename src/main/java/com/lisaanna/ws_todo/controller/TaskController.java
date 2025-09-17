@@ -20,6 +20,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    // TODO: look at all list endpoints -> return 204 for empty list of 200 w/ empty list ([])
     @GetMapping("/")
     @RateLimiter(name = "myRateLimiter")
     public ResponseEntity<List<TaskDTO>> findNotCompleted() {
@@ -157,6 +158,7 @@ public class TaskController {
 
         Optional<TaskDTO> foundTask = taskService.findTaskById(id);
 
+        // TODO: return a 404 instead of 500 ?
         return foundTask
                 .map(taskDTO -> ResponseEntity.ok().body(taskDTO))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
