@@ -46,3 +46,12 @@ out/
 # Ignore frontend build files
 /src/main/resources/static/*
 !/src/main/resources/static/.gitkeep
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+src/main/resources/static/
+frontend/package-lock.json
+
+
+
