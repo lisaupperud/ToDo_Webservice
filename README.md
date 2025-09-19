@@ -20,7 +20,10 @@ Users can create, update, retrieve, and delete tasks via standard HTTP methods.
 - Edit existing tasks
 - Delete all or single tasks
 - Sort and filter tasks
-- Input validation for task data
+- Validation of input for task data
+- Move task to trashcan
+- Retrieve task from trashcan
+- View statistics for 'tags' field
 
 ## Technologies
 
