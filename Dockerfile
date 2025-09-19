@@ -12,7 +12,7 @@ COPY build.gradle.kts settings.gradle.kts gradle/ ./
 COPY . .
 
 # Build the Spring Boot JAR (skip tests to speed up CI/CD)
-RUN gradle clean bootJar -x test --no-daemon
+RUN gradle clean bootJar -x test -x buildFrontend -x copyFrontend --no-daemon
 
 # ---------- Stage 2: Run the app ----------
 FROM amazoncorretto:21

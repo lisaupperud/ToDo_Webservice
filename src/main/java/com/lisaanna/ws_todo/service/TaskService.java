@@ -105,6 +105,9 @@ public class TaskService {
         if (taskDTO.getTags() != null) {
             existingTask.setTags(taskDTO.getTags());
         }
+        if (taskDTO.getPriority() != null) {
+            existingTask.setPriority(taskDTO.getPriority());
+        }
 
         Task updatedTask = taskRepository.save(existingTask);
         return taskMapper.mapToTaskDTO(updatedTask);
